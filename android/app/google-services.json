@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1030273858687",
+    "project_id": "appointmentscheduler4",
+    "storage_bucket": "appointmentscheduler4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1030273858687:android:5b47d97ba1c9b33f64534a",
+        "android_client_info": {
+          "package_name": "com.example.ams_scheduler"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmXA9mGqcYfquI3BuC79iwR-oDv0edJ04"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
