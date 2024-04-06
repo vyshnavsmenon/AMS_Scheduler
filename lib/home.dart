@@ -49,7 +49,7 @@ class Home extends StatelessWidget {
                             backgroundColor: MaterialStatePropertyAll(Theme.of(context).primaryColorDark),            
                           ),
                           onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) =>  const StudentHomePage()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) =>   StudentHomePage()));
                           }, 
                           child: const Text("Student",
                           style: TextStyle(
@@ -70,7 +70,7 @@ class Home extends StatelessWidget {
                       backgroundColor: MaterialStatePropertyAll(Theme.of(context).primaryColorDark),            
                     ),
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const StudentHomePage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) =>  StudentHomePage()));
                     }, 
                     child: const Text("Faculty",
                     style: TextStyle(

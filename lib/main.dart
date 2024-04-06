@@ -1,13 +1,22 @@
-import 'package:ams_scheduler/home.dart';
+// import 'package:ams_scheduler/home.dart';
+import 'dart:io';
+import 'package:ams_scheduler/useState.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
 
-void main() async{
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Platform.isAndroid?
   await Firebase.initializeApp(
-  options: DefaultFirebaseOptions.currentPlatform,
-);
+    options: const FirebaseOptions(
+      apiKey: "AIzaSyDmXA9mGqcYfquI3BuC79iwR-oDv0edJ04", 
+      appId: "1:1030273858687:android:5b47d97ba1c9b33f64534a", 
+      messagingSenderId: "1030273858687", 
+      projectId: "appointmentscheduler4"
+    ),
+  )
+  : await Firebase.initializeApp();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -18,7 +27,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return  MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Home()
+      home: UseStatePage()
     );  
   }
 }

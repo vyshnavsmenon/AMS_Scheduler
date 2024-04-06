@@ -1,15 +1,18 @@
+import 'package:ams_scheduler/service/auth_service.dart';
 import 'package:ams_scheduler/student/schedule.dart';
 import 'package:ams_scheduler/student/scheduled.dart';
 import 'package:ams_scheduler/student/status.dart';
 import 'package:flutter/material.dart';
 
-class StudentHomePage extends StatelessWidget {
-   const StudentHomePage({super.key});
+class StudentHomePage extends StatelessWidget {    
+    StudentHomePage({super.key});
+
+   final auth = AuthService();
 
   @override
   Widget build(BuildContext context) {    
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar(        
         iconTheme: const IconThemeData(
           color: Colors.white
         ),
@@ -20,6 +23,13 @@ class StudentHomePage extends StatelessWidget {
           color: Colors.white,
           fontWeight: FontWeight.bold
         ),),        
+        actions:[IconButton(
+          onPressed: () async{
+            await auth.signOut();
+          }, 
+            icon: const Icon(Icons.logout)
+          ),
+        ] 
       ),
 
       body: Center(
