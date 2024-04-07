@@ -27,7 +27,10 @@ class RejectStatusPage extends StatelessWidget {
         centerTitle: true,
       ),
       body: StreamBuilder(
-        stream: collectionReference,
+        stream: FirebaseFirestore.instance
+          .collection('Reject')
+          .where('studentId', isEqualTo: uid)
+          .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(
@@ -44,24 +47,24 @@ class RejectStatusPage extends StatelessWidget {
               String date = data['date'] ?? '';
               String time = data['time'] ?? '';
               bool isApproved = data['isApproved'] ?? false;
-              final userId = data['studentId'] ?? '';  
 
               if (toName == "1") {
-                toName = "Vice Principal";
+                toName = "Vice Principal - Academics";
               } else if (toName == "2") {
-                toName = "Principal";
+                toName = "Vice Principal - Administration";
               } else if (toName == "3") {
-                toName = "Asst. Manager";
+                toName = "Principal";
               } else if (toName == "4") {
+                toName = "Asst. Manager";
+              }
+              else if (toName == "5") {
                 toName = "Manager";
               }
               if (!isApproved) {
-                if(uid == userId){
                   return ListTile(
                     title: Text(toName),
                     subtitle: Text('$date $time'),
                   );
-                }
               }
               return Container();
             },

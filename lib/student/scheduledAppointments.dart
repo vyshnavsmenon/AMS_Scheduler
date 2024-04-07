@@ -28,8 +28,24 @@ class ScheduledAppointment extends StatelessWidget {
       ),
 
       body: StreamBuilder(
-        stream: collectionReference, 
+        stream:  FirebaseFirestore.instance
+          .collection('Schedule-Details')
+          .where('studentId', isEqualTo: uid)
+          .snapshots(), 
         builder: (context, snapshot) {
+          if (snapshot.hasError) {
+          return const Center(
+            child:  Text('Something went wrong',
+              style: TextStyle(
+                color: Colors.black
+              ),
+            ),
+          );
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        }
           if(snapshot.hasData){
             List appointmentDetails = snapshot.data!.docs;
 
@@ -41,10 +57,9 @@ class ScheduledAppointment extends StatelessWidget {
                 Map<String, dynamic> data = document.data() as Map<String, dynamic>;                
                 String toName = data['toName'] ?? '';
                 String date = data['date'] ?? '';
-                String time = data['time'] ?? '';
-                String userId = data['studentId'];
+                String time = data['time'] ?? '';                                         
 
-                print('User id in sceduled appointment = $userId');
+                print('User id in sceduled appointment = $uid');
 
                 if(toName == "1"){
                   toName = "Vice Principal - Academics";
@@ -61,8 +76,7 @@ class ScheduledAppointment extends StatelessWidget {
                 else if(toName == "5"){
                   toName = "Manager";
                 }
-
-                if(userId == uid){
+                
                   return ListTile(                  
                     title: Text('To Meet: $toName'),                                            
                     subtitle: Text('Date: $date \nTime: $time'),
@@ -111,9 +125,7 @@ class ScheduledAppointment extends StatelessWidget {
                         )
                       ],
                     ),                                                      
-                  );
-                }
-                return null;
+                  );                                
               }                            
             );
           }

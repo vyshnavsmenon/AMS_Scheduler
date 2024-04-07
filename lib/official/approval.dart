@@ -4,9 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class ApproveOrReject extends StatelessWidget {
-   final String uid; // Add this line to declare the uid variable
-
-    // Modify the constructor to accept uid as a parameter
+   final String uid; 
     ApproveOrReject({Key? key, required this.uid}) : super(key: key);
 
   final Stream<QuerySnapshot> collectionReference = FirebaseCrud.read();
@@ -30,7 +28,10 @@ class ApproveOrReject extends StatelessWidget {
       ),
 
       body: StreamBuilder(
-        stream: collectionReference, 
+        stream: FirebaseFirestore.instance
+          .collection('Schedule-Details')
+          .where('adminId', isEqualTo: uid)
+          .snapshots(), 
         builder: (context, snapshots){
           if(snapshots.hasData){
             List appointmentDetails = snapshots.data!.docs;
@@ -43,11 +44,29 @@ class ApproveOrReject extends StatelessWidget {
                 Map<String, dynamic> data = document.data() as Map<String, dynamic>;
                 String name = data['name'] ?? '';
                 String date = data['date'] ?? '';
-                String time = data['time'] ?? '';
-                String adminId = data['adminId'] ?? '';
+                String time = data['time'] ?? '';    
 
-                if(uid == adminId){
-                  return ListTile(
+                var isPresentInApproval = false;
+                var isPresentInReject = false;
+
+                collectionReference1.forEach((snapshot) {
+                  snapshot.docs.forEach((doc) {
+                    if (doc.id == docId) {
+                      isPresentInApproval = true;
+                    }
+                  });
+                });
+
+                collectionReference2.forEach((snapshot) {
+                  snapshot.docs.forEach((doc) {
+                    if (doc.id == docId) {
+                      isPresentInReject = true;
+                    }
+                  });
+                });            
+
+                 if(isPresentInReject || isPresentInApproval){
+                   return ListTile(
                   title: Text(name),
                   subtitle: Text("$date  $time"),
 
@@ -127,9 +146,8 @@ class ApproveOrReject extends StatelessWidget {
                       )
                     ],
                   ),
-                );
-                }
-                return null;
+                );   
+                 }
               }              
             );
           }

@@ -27,7 +27,10 @@ class ApproveStatusPage extends StatelessWidget {
         centerTitle: true,
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: collectionReference,
+        stream: FirebaseFirestore.instance
+          .collection('Approval')
+          .where('studentId', isEqualTo: uid)
+          .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Text('Something went wrong: ${snapshot.error}');
@@ -47,34 +50,33 @@ class ApproveStatusPage extends StatelessWidget {
               final toName = data['toName'] ?? '';
               final date = data['date'] ?? '';
               final time = data['time'] ?? '';
-              final isApproved = data['isApproved'] ?? false;
-              final userId = data['studentId'] ?? '';              
+              final isApproved = data['isApproved'] ?? false;                           
 
               String approvedToName = '';
               switch (toName) {
                 case '1':
-                  approvedToName = 'Vice Principal';
+                  approvedToName = 'Vice Principal - Academics';
                   break;
                 case '2':
-                  approvedToName = 'Principal';
+                  approvedToName = 'Vice Principal - Administration';
                   break;
                 case '3':
-                  approvedToName = 'Asst. Manager';
+                  approvedToName = 'Principal';
                   break;
                 case '4':
+                  approvedToName = 'Asst. Manager';
+                  break;
+                case '5':
                   approvedToName = 'Manager';
                   break;
               }
               
 
-              if (isApproved) {
-                if(uid == userId){
+              if (isApproved) {                
                   return ListTile(
                     title: Text(approvedToName),
                     subtitle: Text('$date $time'),                    
                   );
-                  
-                }
               }
 
               return const SizedBox.shrink();

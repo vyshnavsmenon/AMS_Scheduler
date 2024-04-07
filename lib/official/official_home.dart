@@ -34,6 +34,7 @@ class OfficialHomePage extends StatelessWidget {
             icon: const Icon(Icons.logout)
           )
          ],
+         automaticallyImplyLeading: false,
       ),
 
       body: Center( 

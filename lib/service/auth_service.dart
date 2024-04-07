@@ -46,6 +46,11 @@ class AuthService {
   Future<void> signOut() async{
     try{
       await auth.signOut();
+       if (auth.currentUser == null) {      
+      print('User signed out successfully');
+    } else {      
+      print('User is still signed in');
+    }
     }
     catch(e) {
       Fluttertoast.showToast(

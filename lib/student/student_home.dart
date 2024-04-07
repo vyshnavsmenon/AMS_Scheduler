@@ -37,7 +37,8 @@ class StudentHomePage extends StatelessWidget {
           }, 
             icon: const Icon(Icons.logout)
           ),
-        ] 
+        ],
+        automaticallyImplyLeading: false,
       ),
 
       body: Center(
@@ -73,6 +74,7 @@ class StudentHomePage extends StatelessWidget {
                     backgroundColor: MaterialStatePropertyAll(Theme.of(context).primaryColorDark),            
                   ),
                   onPressed: () {
+                    print('uid send to scheduled appointment = $uid');
                     Navigator.push(context, MaterialPageRoute(builder: (context) =>   ScheduledAppointment(uid: uid,)));
                   }, 
                   child: const Text("Scheduled Appointment",
