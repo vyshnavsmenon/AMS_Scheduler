@@ -18,9 +18,10 @@ class _ScheduleAppointmentState extends State<ScheduleAppointment> {
   final TextEditingController dateController = TextEditingController();
   final TextEditingController timeController = TextEditingController();
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();  
-  
 
-  final Stream<QuerySnapshot> collectionReference = FirebaseCrud.read();
+  String username = '';
+
+  final Stream<QuerySnapshot> collectionReference = FirebaseCrud.read();  
   List<Map<String, dynamic>> documentData = [];  
 
   bool isLoading = false; // Variable to control the loader
@@ -51,6 +52,33 @@ class _ScheduleAppointmentState extends State<ScheduleAppointment> {
 
     if (timepicked != null && timepicked != TimeOfDay.now()) {
       timeController.text = timepicked.format(context);
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchUserName();
+  }
+
+  Future<void> fetchUserName() async{
+    try{
+      QuerySnapshot snapshot = (await FirebaseFirestore.instance
+            .collection('Users')
+            .where('userId', isEqualTo: widget.uid)
+            .get());
+
+      if(snapshot.docs.isNotEmpty){
+        DocumentSnapshot userSnapshot = snapshot.docs.first;
+        username = userSnapshot['fullName'];
+        nameController.text = username;
+      }else{
+        print('Username doesnot exist');
+      }
+    }
+    catch(e){
+      print('Unable to fetch user name due to $e');
     }
   }
 
@@ -124,10 +152,11 @@ class _ScheduleAppointmentState extends State<ScheduleAppointment> {
                 child: DropdownButton(
                   underline: Container(),
                   items: const [
-                    DropdownMenuItem(value: 1, child: Text('Vice principal')),
-                    DropdownMenuItem(value: 2, child: Text('Principal')),
-                    DropdownMenuItem(value: 3, child: Text('Asst. Manager')),
-                    DropdownMenuItem(value: 4, child: Text('Manager')),
+                    DropdownMenuItem(value: 1, child: Text('Vice principal - Academic')),
+                    DropdownMenuItem(value: 2, child: Text('Vice principal - Administer')),
+                    DropdownMenuItem(value: 3, child: Text('Principal')),
+                    DropdownMenuItem(value: 4, child: Text('Asst. Manager')),
+                    DropdownMenuItem(value: 5, child: Text('Manager')),
                   ],
                   value: currentvalue,
                   onChanged: (value) {
@@ -248,8 +277,6 @@ class _ScheduleAppointmentState extends State<ScheduleAppointment> {
                         return Container();                        
                       }                      
                     ),
-
-
               ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor:
@@ -269,6 +296,22 @@ class _ScheduleAppointmentState extends State<ScheduleAppointment> {
                           }
                         }
                       }
+                      String? adminId;
+                      if(currentvalue == 1){
+                        adminId = '5fGUI3q38VRIyi6gKFcmR1IpRx43';
+                      }
+                      else if(currentvalue == 2){
+                        adminId = 'yZBDp2Q525ezRQ7GulFkhOU1WkN2';
+                      }
+                      else if(currentvalue == 3){
+                        adminId = '7LKsnd5f5VcE6g8uevU1V1Oacqy1';
+                      }
+                      else if(currentvalue == 4){
+                        adminId = '7LKsnd5f5VcE6g8uevU1V1Oacqy1';
+                      }
+                      else if(currentvalue == 5){
+                        adminId = 'TtPrAc2vz1Rrf4Sq2uSUl1O8Tw23';
+                      }
 
                       if(slotAvailable){
                         var response = await FirebaseCrud.addScheduleDetails(
@@ -276,7 +319,8 @@ class _ScheduleAppointmentState extends State<ScheduleAppointment> {
                           toName: currentvalue.toString(),
                           date: dateController.text,
                           time: timeController.text,
-                          studentId: uid
+                          studentId: uid, 
+                          adminId: adminId.toString(),
                         );
                         if(response.code == 200){
                           Fluttertoast.showToast(

@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class EditScheduleDetails extends StatefulWidget {
-  final String? docId;
-  const EditScheduleDetails({super.key, this.docId});
+  final String uid;
+  final String docId;
+  EditScheduleDetails({Key? key, required this.uid, required this.docId}) : super(key: key);
 
   @override
   State<EditScheduleDetails> createState() => _EditScheduleDetailsState();
@@ -15,10 +16,15 @@ class EditScheduleDetails extends StatefulWidget {
 
 class _EditScheduleDetailsState extends State<EditScheduleDetails> {
   final TextEditingController name = TextEditingController();
-  final TextEditingController toName = TextEditingController();
-  final TextEditingController date = TextEditingController();
-  final TextEditingController time = TextEditingController();
+  final TextEditingController toNameontroller = TextEditingController();
+  final TextEditingController dateController = TextEditingController();
+  final TextEditingController timeController = TextEditingController();
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
+
+  String username = "";
+  String toName = "";
+  String date = "";
+  String time = "";
 
   final Stream<QuerySnapshot> collectionReference = FirebaseCrud.read();
   // var data;
@@ -37,7 +43,7 @@ class _EditScheduleDetailsState extends State<EditScheduleDetails> {
     );
     if(picked != null){
       String formattedDate = '${picked.day}/${picked.month}/${picked.year}';
-      date.text = formattedDate;
+      dateController.text = formattedDate;
     }
   }
 
@@ -47,7 +53,37 @@ class _EditScheduleDetailsState extends State<EditScheduleDetails> {
       initialTime: TimeOfDay.now()
     );
     if(picked!=null){
-      time.text = picked.format(context);
+      timeController.text = picked.format(context);
+    }
+  }
+
+  void initState() {  
+    super.initState();
+    fetchUserName();
+  }
+
+  Future<void> fetchUserName() async{
+    try{
+      DocumentSnapshot snapshot = (await FirebaseFirestore.instance
+            .collection('Schedule-Details')
+            .doc(widget.docId)          
+            .get());
+
+      if(snapshot.exists){        
+        username = snapshot['name'];
+        name.text = username;
+        toName = snapshot['toName'];
+        toNameontroller.text = toName;
+        date = snapshot['date'];
+        dateController.text = date;
+        time = snapshot['time'];
+        timeController.text = time;
+      }else{
+        print('Username doesnot exist');
+      }
+    }
+    catch(e){
+      print('Unable to fetch user name due to $e');
     }
   }
 
@@ -133,7 +169,7 @@ class _EditScheduleDetailsState extends State<EditScheduleDetails> {
                       const SizedBox(height: 20,),
 
                       TextFormField(              
-                    controller: date,
+                    controller: dateController,
                     autofocus: false,
                     validator: (value) {
                       if(value==null || value.trim().isEmpty){
@@ -179,7 +215,7 @@ class _EditScheduleDetailsState extends State<EditScheduleDetails> {
                     const SizedBox(height: 20,),
 
                     TextFormField(              
-                    controller: time,
+                    controller: timeController,
                     autofocus: false,
                     validator: (value) {
                       if(value==null || value.trim().isEmpty){
@@ -255,8 +291,8 @@ class _EditScheduleDetailsState extends State<EditScheduleDetails> {
                         bool slotAvailable = true;
                         if (formkey.currentState?.validate() ?? false) {                          
                           for(var doc in documentData){
-                            if(doc['toName'] == currentvalue.toString() && doc['date'] == date.text 
-                              && doc['time'] == time.text){
+                            if(doc['toName'] == currentvalue.toString() && doc['date'] == dateController.text 
+                              && doc['time'] == timeController.text){
                                 slotAvailable = false;
                                 Fluttertoast.showToast(
                                   msg: 'Appointment Not Available',
@@ -272,8 +308,8 @@ class _EditScheduleDetailsState extends State<EditScheduleDetails> {
                           var response = await FirebaseCrud.updateScheduleDetails(
                             name: name.text, 
                             toName: currentvalue.toString(), 
-                            date: date.text, 
-                            time: time.text, 
+                            date: dateController.text, 
+                            time: timeController.text, 
                             docId: docId.toString());
 
                             if(response.code == 200){

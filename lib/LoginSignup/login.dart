@@ -1,6 +1,6 @@
 //login.dart
+import 'package:ams_scheduler/LoginSignup/resetPassword.dart';
 import 'package:ams_scheduler/LoginSignup/signup.dart';
-import 'package:ams_scheduler/model/response.dart';
 import 'package:ams_scheduler/official/official_home.dart';
 import 'package:ams_scheduler/service/auth_service.dart';
 import 'package:ams_scheduler/student/student_home.dart';
@@ -136,7 +136,7 @@ class LoginPage extends StatelessWidget {
                       children: [
                         TextButton(
                           onPressed: () {
-                            // Navigator.push(context, MaterialPageRoute(builder: (context) =>   SignupPage()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) =>   ResetPasswordPage()));
                           }, 
                           child: const Text('Forgot password?',
                           style: TextStyle(
@@ -159,18 +159,18 @@ class LoginPage extends StatelessWidget {
                               String userEmail = user.email!;
                               if(userEmail == 'viceprincipal@gmail.com' || userEmail == 'viceprincipal@gmail.com' || userEmail == 'principal@gmail.com'
                                  || userEmail == 'asstmanager@gmail.com'){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) =>  OfficialHomePage()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) =>  OfficialHomePage(uid: userid,)));
                               }                                                          
                               else{
                                 print('User id after login = $userid');
-                                Response response = await UserDetails.getUserDetails(user.uid);                                
-                                if(response.code == 200){
+                                // Response response = await UserDetails.getUserDetails(userid);                                
+                                // if(response.code == 200){
                                   Navigator.push(context, MaterialPageRoute(builder: (context) =>  StudentHomePage(uid: userid,)));                                                                                                 
-                                  print('User ID = $userid');
-                                }
-                                else{
-                                  print('Unable to get the user Details');
-                                }
+                                  // print('User ID = $userid');
+                                // }
+                                // else{
+                                //   print('Unable to get the user Details');
+                                // }
                               }                              
                             }                                
                           }

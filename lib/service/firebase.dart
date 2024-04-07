@@ -12,9 +12,6 @@ final CollectionReference collection1 = firestore1.collection('Approval');
 final FirebaseFirestore firestore2 = FirebaseFirestore.instance;
 final CollectionReference collection2 = firestore2.collection('Reject');
 
-// final FirebaseFirestore firestore3 = FirebaseFirestore.instance;
-// final CollectionReference collection3 = firestore3.collection('Student-Schedule-Details');
-
 class FirebaseCrud{
 
   static Future<Response> addScheduleDetails({
@@ -23,6 +20,7 @@ class FirebaseCrud{
     required String date,
     required String time,
     required String studentId,
+    required String adminId,
   })async{
 
     Response response = Response();
@@ -36,6 +34,7 @@ class FirebaseCrud{
       "time" : time,
       "isApproved" : "",
       "studentId" : studentId,
+      "adminId" : adminId
     };
 
     await documentReferencer.set(data).whenComplete(() {
@@ -202,7 +201,7 @@ class FirebaseCrud{
     
     
     return response;
-  }  
+  }    
 }
 
 

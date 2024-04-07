@@ -1,7 +1,8 @@
 // student_home.dart
+import 'package:ams_scheduler/LoginSignup/login.dart';
 import 'package:ams_scheduler/service/auth_service.dart';
 import 'package:ams_scheduler/student/schedule.dart';
-import 'package:ams_scheduler/student/scheduled.dart';
+import 'package:ams_scheduler/student/scheduledAppointments.dart';
 import 'package:ams_scheduler/student/status.dart';
 import 'package:flutter/material.dart';
 
@@ -32,6 +33,7 @@ class StudentHomePage extends StatelessWidget {
         actions:[IconButton(
           onPressed: () async{
             await auth.signOut();
+            Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
           }, 
             icon: const Icon(Icons.logout)
           ),
@@ -71,7 +73,7 @@ class StudentHomePage extends StatelessWidget {
                     backgroundColor: MaterialStatePropertyAll(Theme.of(context).primaryColorDark),            
                   ),
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) =>   ScheduledAppointment()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) =>   ScheduledAppointment(uid: uid,)));
                   }, 
                   child: const Text("Scheduled Appointment",
                   style: TextStyle(

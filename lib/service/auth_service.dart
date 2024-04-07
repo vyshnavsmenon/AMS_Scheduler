@@ -94,26 +94,26 @@ class UserDetails{
     return response;
   }
 
-  static Future<Response> getUserDetails(String userId) async {
-    Response response = Response();
+  // static Future<Response> getUserDetails(String userId) async {
+  //   Response response = Response();
 
-    try {
-      DocumentSnapshot documentSnapshot = await collection.doc(userId).get();
+  //   try {
+  //     DocumentSnapshot documentSnapshot = await collection.doc(userId).get();
 
-      if (documentSnapshot.exists) {
-        response.code = 200;
-        response.data = documentSnapshot.data();
-      } else {
-        response.code = 404;
-        response.message = "User not found";
-      }
-    } catch (e) {
-      response.code = 500;
-      response.message = "$e";
-    }
+  //     if (documentSnapshot.exists) {
+  //       response.code = 200;
+  //       response.data = documentSnapshot.data();
+  //     } else {
+  //       response.code = 404;
+  //       response.message = "User not found";
+  //     }
+  //   } catch (e) {
+  //     response.code = 500;
+  //     response.message = "$e";
+  //   }
 
-    return response;
-  }
+  //   return response;
+  // }
 
 }
 

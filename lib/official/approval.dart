@@ -4,7 +4,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class ApproveOrReject extends StatelessWidget {
-   ApproveOrReject({super.key});
+   final String uid; // Add this line to declare the uid variable
+
+    // Modify the constructor to accept uid as a parameter
+    ApproveOrReject({Key? key, required this.uid}) : super(key: key);
 
   final Stream<QuerySnapshot> collectionReference = FirebaseCrud.read();
   final Stream<QuerySnapshot> collectionReference1 = FirebaseCrud.readApprove();
@@ -41,8 +44,10 @@ class ApproveOrReject extends StatelessWidget {
                 String name = data['name'] ?? '';
                 String date = data['date'] ?? '';
                 String time = data['time'] ?? '';
+                String adminId = data['adminId'] ?? '';
 
-                return ListTile(
+                if(uid == adminId){
+                  return ListTile(
                   title: Text(name),
                   subtitle: Text("$date  $time"),
 
@@ -123,6 +128,7 @@ class ApproveOrReject extends StatelessWidget {
                     ],
                   ),
                 );
+                }
               }              
             );
           }

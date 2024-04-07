@@ -1,3 +1,4 @@
+import 'package:ams_scheduler/LoginSignup/login.dart';
 import 'package:ams_scheduler/service/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -215,6 +216,7 @@ class SignupPage extends StatelessWidget {
                           if(formkey.currentState!.validate()){
                             var user = await auth.createUserWithEmailAndPassword(email.text, password.text, fullName.text);                                                        
                             if(user!=null){
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
                               Fluttertoast.showToast(
                                 msg: 'Account Created Successfully',
                                 backgroundColor: Colors.green,
