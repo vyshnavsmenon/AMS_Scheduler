@@ -113,7 +113,8 @@ class ScheduledAppointment extends StatelessWidget {
                     ),                                                      
                   );
                 }
-              }              
+                return null;
+              }                            
             );
           }
           else{
