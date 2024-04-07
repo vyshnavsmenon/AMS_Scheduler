@@ -1,8 +1,12 @@
+import 'package:ams_scheduler/LoginSignup/login.dart';
 import 'package:ams_scheduler/official/approval.dart';
+import 'package:ams_scheduler/service/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class OfficialHomePage extends StatelessWidget {
-  const OfficialHomePage({super.key});
+  OfficialHomePage({super.key});
+
+  final auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +22,15 @@ class OfficialHomePage extends StatelessWidget {
           fontWeight: FontWeight.bold
          ),),
          centerTitle: true,
+         actions: [
+          IconButton(
+            onPressed: () async{
+              await auth.signOut();
+              Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+            }, 
+            icon: const Icon(Icons.logout)
+          )
+         ],
       ),
 
       body: Center( 

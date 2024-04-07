@@ -4,7 +4,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ams_scheduler/service/firebase.dart';
 
 class ScheduleAppointment extends StatefulWidget {
-  ScheduleAppointment({super.key});
+  final String uid; // Add this line to declare the uid variable
+
+    // Modify the constructor to accept uid as a parameter
+    ScheduleAppointment({Key? key, required this.uid}) : super(key: key);
 
   @override
   State<ScheduleAppointment> createState() => _ScheduleAppointmentState();
@@ -14,7 +17,7 @@ class _ScheduleAppointmentState extends State<ScheduleAppointment> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
   final TextEditingController timeController = TextEditingController();
-  final GlobalKey<FormState> formkey = GlobalKey<FormState>();
+  final GlobalKey<FormState> formkey = GlobalKey<FormState>();  
   
 
   final Stream<QuerySnapshot> collectionReference = FirebaseCrud.read();
@@ -53,6 +56,8 @@ class _ScheduleAppointmentState extends State<ScheduleAppointment> {
 
   @override
   Widget build(BuildContext context) {
+    String uid = widget.uid;
+    print('USer ID from schedule page = $uid');
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
@@ -270,7 +275,8 @@ class _ScheduleAppointmentState extends State<ScheduleAppointment> {
                           name: nameController.text,
                           toName: currentvalue.toString(),
                           date: dateController.text,
-                          time: timeController.text
+                          time: timeController.text,
+                          studentId: uid
                         );
                         if(response.code == 200){
                           Fluttertoast.showToast(

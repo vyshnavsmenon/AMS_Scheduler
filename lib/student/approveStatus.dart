@@ -2,8 +2,11 @@ import 'package:ams_scheduler/service/firebase.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class ApproveStatusPage extends StatelessWidget {
-   ApproveStatusPage({super.key});
+class ApproveStatusPage extends StatelessWidget {  
+   final String uid; // Add this line to declare the uid variable
+
+    // Modify the constructor to accept uid as a parameter
+    ApproveStatusPage({Key? key, required this.uid}) : super(key: key);
 
   final Stream<QuerySnapshot> collectionReference = FirebaseCrud.readApprove();
 
@@ -45,6 +48,7 @@ class ApproveStatusPage extends StatelessWidget {
               final date = data['date'] ?? '';
               final time = data['time'] ?? '';
               final isApproved = data['isApproved'] ?? false;
+              final userId = data['studentId'] ?? '';              
 
               String approvedToName = '';
               switch (toName) {
@@ -61,12 +65,16 @@ class ApproveStatusPage extends StatelessWidget {
                   approvedToName = 'Manager';
                   break;
               }
+              
 
               if (isApproved) {
-                return ListTile(
-                  title: Text(approvedToName),
-                  subtitle: Text('$date $time'),
-                );
+                if(uid == userId){
+                  return ListTile(
+                    title: Text(approvedToName),
+                    subtitle: Text('$date $time'),                    
+                  );
+                  
+                }
               }
 
               return const SizedBox.shrink();

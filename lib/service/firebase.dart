@@ -22,6 +22,7 @@ class FirebaseCrud{
     required String toName,
     required String date,
     required String time,
+    required String studentId,
   })async{
 
     Response response = Response();
@@ -34,6 +35,7 @@ class FirebaseCrud{
       "date" : date,
       "time" : time,
       "isApproved" : "",
+      "studentId" : studentId,
     };
 
     await documentReferencer.set(data).whenComplete(() {
@@ -146,6 +148,7 @@ class FirebaseCrud{
   required String toName,
   required String date,
   required String time,
+  required String studentId,
   })async{
     Response response = Response();
     DocumentReference documentReferencer = collection.doc(docId);
@@ -177,7 +180,8 @@ class FirebaseCrud{
       "toName" : toName,
       "date" : date,
       "time" : time,
-      "isApproved" : isApproved
+      "isApproved" : isApproved,
+      "studentId" : studentId
     };
 
     await documentReferencer1.set(data1);
@@ -188,7 +192,8 @@ class FirebaseCrud{
       "toName" : toName,
       "date" : date,
       "time" : time,
-      "isApproved" : isApproved
+      "isApproved" : isApproved,
+      "studentId" : studentId
     };
 
       await documentReferencer2.set(data2);

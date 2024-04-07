@@ -58,7 +58,9 @@ class ApproveOrReject extends StatelessWidget {
                             name: data['name'],
                             toName: data['toName'],
                             date: data['date'],
-                            time: data['time'],                            
+                            time: data['time'], 
+                            studentId: data['studentId'], 
+                                                       
                           );
                           if(response.code == 200){
                             Fluttertoast.showToast(
@@ -89,6 +91,7 @@ class ApproveOrReject extends StatelessWidget {
                             toName: data['toName'],
                             date: data['date'],
                             time: data['time'],  
+                            studentId: data['studentId']
                           );
                           if(response.code == 200){
                             if(isApproved){

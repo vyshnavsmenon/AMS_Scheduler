@@ -18,7 +18,8 @@ class UseStatePage extends StatelessWidget {
         }
         else if(userSnapshots.connectionState == ConnectionState.active){
           if(userSnapshots.hasData){
-            return StudentHomePage();
+            String userid = userSnapshots.data!.uid;
+            return StudentHomePage(uid: userid,);
           }
           else{
             return LoginPage();

@@ -1,12 +1,13 @@
 //login.dart
 import 'package:ams_scheduler/LoginSignup/signup.dart';
 import 'package:ams_scheduler/model/response.dart';
+import 'package:ams_scheduler/official/official_home.dart';
 import 'package:ams_scheduler/service/auth_service.dart';
 import 'package:ams_scheduler/student/student_home.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {
-   LoginPage({super.key});
+  LoginPage({super.key});
 
    final auth = AuthService();
 
@@ -152,12 +153,25 @@ class LoginPage extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () async{
                           if(formkey.currentState!.validate()){
-                            final user = await auth.loginUserWithEmailAndPassword(email.text, password.text);                            
-                            if(user != null){
-                              Response response = await UserDetails.getUserDetails(user.uid);
-                              if(response.code == 200){
-                                Navigator.push(context, MaterialPageRoute(builder: (context) =>  StudentHomePage()));
-                              }
+                            final user = await auth.loginUserWithEmailAndPassword(email.text, password.text);                                                    
+                            if(user?.uid != null){
+                              String userid = user!.uid;  
+                              String userEmail = user.email!;
+                              if(userEmail == 'viceprincipal@gmail.com' || userEmail == 'viceprincipal@gmail.com' || userEmail == 'principal@gmail.com'
+                                 || userEmail == 'asstmanager@gmail.com'){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) =>  OfficialHomePage()));
+                              }                                                          
+                              else{
+                                print('User id after login = $userid');
+                                Response response = await UserDetails.getUserDetails(user.uid);                                
+                                if(response.code == 200){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) =>  StudentHomePage(uid: userid,)));                                                                                                 
+                                  print('User ID = $userid');
+                                }
+                                else{
+                                  print('Unable to get the user Details');
+                                }
+                              }                              
                             }                                
                           }
                         }, 

@@ -3,7 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class RejectStatusPage extends StatelessWidget {
-  RejectStatusPage({super.key});
+  final String uid; // Add this line to declare the uid variable
+
+    // Modify the constructor to accept uid as a parameter
+    RejectStatusPage({Key? key, required this.uid}) : super(key: key);
 
   final Stream<QuerySnapshot> collectionReference = FirebaseCrud.readReject();
 
@@ -41,6 +44,8 @@ class RejectStatusPage extends StatelessWidget {
               String date = data['date'] ?? '';
               String time = data['time'] ?? '';
               bool isApproved = data['isApproved'] ?? false;
+              final userId = data['studentId'] ?? '';  
+
               if (toName == "1") {
                 toName = "Vice Principal";
               } else if (toName == "2") {
@@ -51,10 +56,12 @@ class RejectStatusPage extends StatelessWidget {
                 toName = "Manager";
               }
               if (!isApproved) {
-                return ListTile(
-                  title: Text(toName),
-                  subtitle: Text('$date $time'),
-                );
+                if(uid == userId){
+                  return ListTile(
+                    title: Text(toName),
+                    subtitle: Text('$date $time'),
+                  );
+                }
               }
               return Container();
             },
