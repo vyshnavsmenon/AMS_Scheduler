@@ -5,15 +5,25 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class ApproveOrReject extends StatelessWidget {
    final String uid; 
-    ApproveOrReject({Key? key, required this.uid}) : super(key: key);
+    ApproveOrReject({Key? key, required this.uid}) : super(key: key);  
 
-  final Stream<QuerySnapshot> collectionReference = FirebaseCrud.read();
-  final Stream<QuerySnapshot> collectionReference1 = FirebaseCrud.readApprove();
-  final Stream<QuerySnapshot> collectionReference2 = FirebaseCrud.readReject();
   bool isApproved = false;  
 
+  List<String> approvedIds = [];
+
+  List<String> rejectedIds = [];
+
   @override
-  Widget build(BuildContext context) {
+  
+
+  @override
+  Widget build(BuildContext context) { 
+    final Stream<QuerySnapshot> collectionReference  = FirebaseCrud.read(uid: uid);
+
+    // final Stream<QuerySnapshot> collectionReference1 = FirebaseCrud.readApprove();
+
+    // final Stream<QuerySnapshot> collectionReference2 = FirebaseCrud.readReject();   
+    print('Admin id = $uid');
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
@@ -28,13 +38,12 @@ class ApproveOrReject extends StatelessWidget {
       ),
 
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance
-          .collection('Schedule-Details')
-          .where('adminId', isEqualTo: uid)
-          .snapshots(), 
+        stream: collectionReference,
         builder: (context, snapshots){
           if(snapshots.hasData){
             List appointmentDetails = snapshots.data!.docs;
+            // .where((doc) => !approvedIds.contains(doc.id) && !rejectedIds.contains(doc.id))
+            // .toList();
 
             return ListView.builder(              
               itemCount: appointmentDetails.length,
@@ -44,28 +53,9 @@ class ApproveOrReject extends StatelessWidget {
                 Map<String, dynamic> data = document.data() as Map<String, dynamic>;
                 String name = data['name'] ?? '';
                 String date = data['date'] ?? '';
-                String time = data['time'] ?? '';    
+                String time = data['time'] ?? '';                 
 
-                var isPresentInApproval = false;
-                var isPresentInReject = false;
-
-                collectionReference1.forEach((snapshot) {
-                  snapshot.docs.forEach((doc) {
-                    if (doc.id == docId) {
-                      isPresentInApproval = true;
-                    }
-                  });
-                });
-
-                collectionReference2.forEach((snapshot) {
-                  snapshot.docs.forEach((doc) {
-                    if (doc.id == docId) {
-                      isPresentInReject = true;
-                    }
-                  });
-                });            
-
-                 if(isPresentInReject || isPresentInApproval){
+                //  if(!approvalPending){
                    return ListTile(
                   title: Text(name),
                   subtitle: Text("$date  $time"),
@@ -147,7 +137,7 @@ class ApproveOrReject extends StatelessWidget {
                     ],
                   ),
                 );   
-                 }
+                //  }
               }              
             );
           }

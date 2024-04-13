@@ -21,7 +21,7 @@ class _ScheduleAppointmentState extends State<ScheduleAppointment> {
 
   String username = '';
 
-  final Stream<QuerySnapshot> collectionReference = FirebaseCrud.read();  
+  final Stream<QuerySnapshot> collectionReference = FirebaseCrud.readStudentScheduleDetails();  
   List<Map<String, dynamic>> documentData = [];  
 
   bool isLoading = false; // Variable to control the loader
@@ -84,6 +84,7 @@ class _ScheduleAppointmentState extends State<ScheduleAppointment> {
 
   @override
   Widget build(BuildContext context) {
+    // final Stream<QuerySnapshot> collectionReference = FirebaseCrud.read(uid: widget.uid);
     String uid = widget.uid;
     print('USer ID from schedule page = $uid');
     return Scaffold(

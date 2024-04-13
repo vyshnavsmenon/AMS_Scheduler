@@ -50,9 +50,12 @@ class FirebaseCrud{
     return response;
   }
 
-  static Stream<QuerySnapshot> read() {
+  static Stream<QuerySnapshot> read({
+    required String uid
+  }) {
   return collection
       .where('isApproved', isEqualTo: "")
+      .where('adminId', isEqualTo: uid)
       .snapshots();
   }
   

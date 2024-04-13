@@ -1,5 +1,6 @@
 import 'package:ams_scheduler/LoginSignup/login.dart';
 import 'package:ams_scheduler/official/approval.dart';
+import 'package:ams_scheduler/official/markLeave.dart';
 import 'package:ams_scheduler/service/auth_service.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +13,7 @@ class OfficialHomePage extends StatelessWidget {
   final auth = AuthService();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {    
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColorDark,
@@ -38,19 +39,40 @@ class OfficialHomePage extends StatelessWidget {
       ),
 
       body: Center( 
-          child:ElevatedButton(
-          style: const ButtonStyle(
-            backgroundColor: MaterialStatePropertyAll(Colors.blue)          
-          ),        
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => ApproveOrReject(uid: uid,)));
-          }, 
-          child: const Text('Appointments',
-            style: TextStyle(
-              color: Colors.white,            
-            ),
-          )
-        ),
+          child:Column(
+            children: [
+              ElevatedButton(
+                style: const ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll(Colors.blue)          
+                ),        
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ApproveOrReject(uid: uid,)));
+                }, 
+                child: const Text('Appointments',
+                  style: TextStyle(
+                    color: Colors.white,            
+                  ),
+                )
+              ),
+
+              const SizedBox(height: 30,),
+
+              ElevatedButton(
+                style: const ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll(Colors.blue)          
+                ),        
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => MarkLeavePage()));
+                }, 
+                child: const Text('Mark Leave',
+                  style: TextStyle(
+                    color: Colors.white,            
+                  ),
+                )
+              ),
+
+            ],
+          ),
       ),
     );
   }

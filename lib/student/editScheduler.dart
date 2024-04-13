@@ -21,12 +21,14 @@ class _EditScheduleDetailsState extends State<EditScheduleDetails> {
   final TextEditingController timeController = TextEditingController();
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
+  final Stream<QuerySnapshot> collectionReference = FirebaseCrud.readStudentScheduleDetails();
+
   String username = "";
   String toName = "";
   String date = "";
   String time = "";
 
-  final Stream<QuerySnapshot> collectionReference = FirebaseCrud.read();
+  
   // var data;
   List<Map<String, dynamic>> documentData = [];  
 
@@ -88,7 +90,7 @@ class _EditScheduleDetailsState extends State<EditScheduleDetails> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {    
     docId = widget.docId;
     return Scaffold(
       appBar: AppBar(

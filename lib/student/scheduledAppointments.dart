@@ -44,7 +44,7 @@ class ScheduledAppointment extends StatelessWidget {
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
+          return const Center(child: CircularProgressIndicator());
         }
           if(snapshot.hasData){
             List appointmentDetails = snapshot.data!.docs;

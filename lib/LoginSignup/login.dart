@@ -157,7 +157,7 @@ class LoginPage extends StatelessWidget {
                             if(user?.uid != null){
                               String userid = user!.uid;  
                               String userEmail = user.email!;
-                              if(userEmail == 'viceprincipal@gmail.com' || userEmail == 'viceprincipal@gmail.com' || userEmail == 'principal@gmail.com'
+                              if(userEmail == 'viceprincipal@gmail.com' || userEmail == 'viceprincipal2@gmail.com' || userEmail == 'principal@gmail.com'
                                  || userEmail == 'asstmanager@gmail.com'){
                                   Navigator.push(context, MaterialPageRoute(builder: (context) =>  OfficialHomePage(uid: userid,)));
                               }                                                          
