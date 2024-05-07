@@ -12,6 +12,9 @@ final CollectionReference collection1 = firestore1.collection('Approval');
 final FirebaseFirestore firestore2 = FirebaseFirestore.instance;
 final CollectionReference collection2 = firestore2.collection('Reject');
 
+final FirebaseFirestore firestore3 = FirebaseFirestore.instance;
+final CollectionReference collection3 = firestore3.collection('LeaveDate');
+
 class FirebaseCrud{
 
   static Future<Response> addScheduleDetails({
@@ -204,7 +207,34 @@ class FirebaseCrud{
     
     
     return response;
-  }    
+  }  
+
+  static Future<Response> markLeave({
+    required DateTime date,
+    required String adminId
+  })   async {
+    
+    Response response = Response();
+    DocumentReference documentReferencer = collection3.doc();
+
+    Map<String ,dynamic> data = <String,dynamic>{
+      "date" : date,
+      "adminId" : adminId
+    };
+
+    documentReferencer.set(data).whenComplete(() {
+      response.code = 200;
+      response.message = "Leave marked on $date";
+    })
+
+    .catchError((e) {
+      response.code = 500;
+      response.message = "Leave marking failed";
+    });
+
+    return response;
+
+  }
 }
 
 

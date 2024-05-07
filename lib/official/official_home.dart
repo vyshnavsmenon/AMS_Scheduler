@@ -62,7 +62,7 @@ class OfficialHomePage extends StatelessWidget {
                   backgroundColor: MaterialStatePropertyAll(Colors.blue)          
                 ),        
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => MarkLeavePage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => MarkLeavePage(adminId: uid,)));
                 }, 
                 child: const Text('Mark Leave',
                   style: TextStyle(
